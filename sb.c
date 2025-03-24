@@ -3,29 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   sb.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 17:11:44 by macbook           #+#    #+#             */
-/*   Updated: 2025/01/27 19:01:36 by macbook          ###   ########.fr       */
+/*   Updated: 2025/03/24 16:26:02 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
 
-void sb(Stack *stack) {
-  Node *tmp;
-  Node *current;
-
-  if (stack->head == NULL || stack->head->next == NULL) {
-      return ;
-  }
-  
-  current = stack->head;
-  tmp = current->next;
-  
-  current->next = tmp->next;
-  tmp->next = current;
-  
-  stack->head = tmp; 
+void sb(Stack *stack_b) {
+  if (stack_b->head == NULL || stack_b->head->next == NULL)
+    return;
+  ft_swap(stack_b);
+  write(1, "sb\n", 3); 
 }

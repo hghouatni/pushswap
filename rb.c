@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   rb.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:49:55 by macbook           #+#    #+#             */
-/*   Updated: 2025/01/29 17:34:17 by macbook          ###   ########.fr       */
+/*   Updated: 2025/03/24 16:24:41 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void rb(Stack *stack_a)
+void rb(Stack *stack_b)
 {
-  if (stack_a->head == NULL || stack_a->head->next == NULL)
+  if (stack_b->head == NULL || stack_b->head->next == NULL)
     return;
-  ft_rotate(stack_a);
+  ft_rotate(stack_b);
   write(1, "rb\n", 3); 
 }

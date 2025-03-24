@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sa.c                                               :+:      :+:    :+:   */
+/*   ss.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/19 17:11:44 by macbook           #+#    #+#             */
-/*   Updated: 2025/03/24 16:24:06 by hghoutan         ###   ########.fr       */
+/*   Created: 2025/03/24 13:38:30 by hghoutan          #+#    #+#             */
+/*   Updated: 2025/03/24 16:25:15 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
-void sa(Stack *stack_a) {
+void ss(Stack *stack_a, Stack *stack_b)
+{
   if (stack_a->head == NULL || stack_a->head->next == NULL)
-    return;
+    if (stack_b->head == NULL || stack_b->head->next == NULL)
+      return;
   ft_swap(stack_a);
-  write(1, "sa\n", 3);
+  ft_swap(stack_b);
+  write(1, "ss\n", 3);
 }

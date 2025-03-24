@@ -6,7 +6,7 @@
 /*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:21:42 by macbook           #+#    #+#             */
-/*   Updated: 2025/03/24 12:02:14 by hghoutan         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:48:05 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ void ft_rotate(Stack *stack)
     current = current->next;
   }
   current->next = tmp;  
+
+  // Node *tmp;
+  // Node *tail;
+
+  // if (stack->head == NULL || stack->head->next == NULL)
+  //   return;
+  // tmp = stack->head;
+  // stack->head = tmp->next;
+  // tmp->next = NULL;
+
+  // tail = stack->head;
+  // while (tail->next)
+  //   tail = tail->next;
+  // tail->next = tmp;
 }
 
 void ft_rrotate(Stack *stack)
@@ -62,4 +76,19 @@ void ft_rrotate(Stack *stack)
   prev->next = NULL;
   current->next = tmp;
   stack->head = current;
+}
+
+void ft_swap(Stack *stack)
+{
+  Node *tmp;
+  Node *current;
+  
+  if (stack->head == NULL || stack->head->next == NULL) {
+      return ;
+  }
+  current = stack->head;
+  tmp = current->next;
+  current->next = tmp->next;
+  tmp->next = current;
+  stack->head = tmp;
 }
