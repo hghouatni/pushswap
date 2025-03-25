@@ -6,7 +6,7 @@
 /*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:24:14 by macbook           #+#    #+#             */
-/*   Updated: 2025/03/25 13:42:12 by hghoutan         ###   ########.fr       */
+/*   Updated: 2025/03/25 15:20:35 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "libft/libft.h"
 
 typedef struct s_node {
-    void *data;
+    int data;
     struct s_node* next;
 } t_node;
 

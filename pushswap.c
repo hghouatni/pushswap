@@ -6,7 +6,7 @@
 /*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:30:21 by macbook           #+#    #+#             */
-/*   Updated: 2025/03/25 13:42:48 by hghoutan         ###   ########.fr       */
+/*   Updated: 2025/03/25 15:44:08 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,11 @@ int validate_input(char **argv, t_stack *stack) {
 
 
 
-t_node* createt_node(long data) {
+t_node* createt_node(int data) {
   t_node* new_node;
   
   new_node = (t_node*)malloc(sizeof(t_node));
-  new_node->data = (void*)data;
+  new_node->data = data;
   new_node->next = NULL;
   return new_node;
 }
@@ -130,7 +130,7 @@ void print_stack(t_node *head) {
 
   current = head;
   while (current) {
-    printf("%d\n", current->data);
+    printf("%ld\n", (long)current->data);
     current = current->next;
   }
 }
@@ -161,33 +161,48 @@ int get_size(t_stack *stack) {
     return (size);
 }
 
+void sort_three(t_stack *stack) {
+    int a;
+    int b;
+    int c;
+
+    a = (long)stack->head->data;
+    b = (int)stack->head->next->data;
+    c = (int)stack->head->next->next->data;
+
+    if (a > b && b < c && a < c)
+        sa(stack);
+    else if (a > b && b > c && a > c) {
+        sa(stack);
+        rra(stack);
+    }
+    else if (a > b && b > c && a < c)
+        ra(stack);
+    else if (a < b && b > c && a < c) {
+        sa(stack);
+        ra(stack);
+    }
+    else if (a < b && b > c && a > c)
+        rra(stack);
+}
+
+void count_sort(t_stack *stack_a, t_stack *stack_b, int size) {
+    
+}
+
 void sort_small_stack(t_stack *stack_a, t_stack *stack_b, int size) {
-    if (size == 2) {
+    if (size == 1)
+        return;
+    else if (size == 2) {
         sa(stack_a);
     }
-    // else if (size == 3) {
-    //     if (stack_a->head->data > stack_a->head->next->data && stack_a->head->data < stack_a->head->next->next->data)
-    //         sa(stack_a);
-    //     else if (stack_a->head->data > stack_a->head->next->data && stack_a->head->data > stack_a->head->next->next->data)
-    //     {
-    //         sa(stack_a);
-    //         rra(stack_a);
-    //     }
-    //     else if (stack_a->head->data < stack_a->head->next->data && stack_a->head->data > stack_a->head->next->next->data)
-    //         ra(stack_a);
-    //     else if (stack_a->head->data < stack_a->head->next->data && stack_a->head->data < stack_a->head->next->next->data)
-    //     {
-    //         sa(stack_a);
-    //         ra(stack_a);
-    //     }
-    // }
-    // else if (size == 4) {
-    //     pb(stack_a, stack_b);
-    //     pb(stack_a, stack_b);
-    //     sort_small_stack(stack_a, stack_b, 2);
-    //     pa(stack_b, stack_a);
-    //     pa(stack_b, stack_a);
-    // }
+    while (size > 3) {
+        pb(stack_a, stack_b);
+        size--;
+    }
+    sort_three(stack_a);
+    else
+        count_sort(stack_a, stack_b, size);
 }
 
 void free_stack(t_stack *stack) {
@@ -201,6 +216,61 @@ void free_stack(t_stack *stack) {
         free(temp);
     }
     stack->head = NULL;
+}
+
+int getMax(t_stack *stack_a, int n)
+{
+    t_node *current;
+    int max;
+    
+    max = 0;
+    current = stack_a->head;
+    while (current) {
+        if (current->data > max)
+            max = current->data;
+        current = current->next;
+    }
+    return max;
+}
+
+// A function to do counting sort of arr[]
+// according to the digit
+// represented by exp.
+void countSort(int arr[], int n, int exp)
+{
+
+    // Output array
+    int output[n];
+    int i, count[10] = { 0 };
+
+    // Store count of occurrences
+    // in count[]
+    for (i = 0; i < n; i++)
+        count[(arr[i] / exp) % 10]++;
+
+    // Change count[i] so that count[i]
+    // now contains actual position
+    // of this digit in output[]
+    for (i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+
+    // Build the output array
+    for (i = n - 1; i >= 0; i--) {
+        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+        count[(arr[i] / exp) % 10]--;
+    }
+
+    // Copy the output array to arr[],
+    // so that arr[] now contains sorted
+    // numbers according to current digit
+    for (i = 0; i < n; i++)
+        arr[i] = output[i];
+}
+
+
+void radixsort(t_stack stack_a, t_stack stack_b, int n)
+{
+    int m = getMax(stack_a, n);
 }
 
 int main(int argc, char **argv)
@@ -220,9 +290,10 @@ int main(int argc, char **argv)
         if (is_sorted(&stack_a))
             return (0);
         size = get_size(&stack_a);
-        if (size < 5)
+        if (size < 20)
             sort_small_stack(&stack_a, &stack_b, size);
-        
+        else
+            radix_sort(&stack_a, &stack_b, size);
         // //sa(&stack_a);
         // // pb(&stack_a, &stack_b);
         // // pb(&stack_a, &stack_b);
