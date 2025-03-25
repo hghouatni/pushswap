@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   rra.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:53:45 by macbook           #+#    #+#             */
-/*   Updated: 2025/01/29 16:05:00 by macbook          ###   ########.fr       */
+/*   Updated: 2025/03/25 13:40:52 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
 
-void rra(Stack *stack_a)
+void rra(t_stack *stack_a)
 {
   if (stack_a->head == NULL || stack_a->head->next == NULL)
     return;

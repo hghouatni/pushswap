@@ -6,7 +6,7 @@
 /*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:30:21 by macbook           #+#    #+#             */
-/*   Updated: 2025/03/25 13:30:38 by hghoutan         ###   ########.fr       */
+/*   Updated: 2025/03/25 13:42:48 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include <stdio.h>
 
 
-int ft_exist(Stack *stack, int num) {
-    Node *current = stack->head;
+int ft_exist(t_stack *stack, int num) {
+    t_node *current = stack->head;
     while (current != NULL) {
         if ((long)current->data == num)
             return 1;
@@ -63,7 +63,7 @@ long	ft_atoi2(const char *str)
 	return (num * ng);
 }
 
-int validate_input(char **argv, Stack *stack) {
+int validate_input(char **argv, t_stack *stack) {
     char **split_args;
     int i;
     int j;
@@ -101,20 +101,20 @@ int validate_input(char **argv, Stack *stack) {
 
 
 
-Node* createNode(long data) {
-  Node* new_node;
+t_node* createt_node(long data) {
+  t_node* new_node;
   
-  new_node = (Node*)malloc(sizeof(Node));
+  new_node = (t_node*)malloc(sizeof(t_node));
   new_node->data = (void*)data;
   new_node->next = NULL;
   return new_node;
 }
 
-void push_stack(Stack *stack, int data) {
-    Node* node;
-    Node *current;
+void push_stack(t_stack *stack, int data) {
+    t_node* node;
+    t_node *current;
     
-    node = createNode(data);
+    node = createt_node(data);
     if (node == NULL)
         return;
     if (stack->head == NULL) 
@@ -125,8 +125,8 @@ void push_stack(Stack *stack, int data) {
     current->next = node;
 }
 
-void print_stack(Node *head) {
-  Node* current;
+void print_stack(t_node *head) {
+  t_node* current;
 
   current = head;
   while (current) {
@@ -135,8 +135,8 @@ void print_stack(Node *head) {
   }
 }
 
-int is_sorted(Stack *stack) {
-    Node *current;
+int is_sorted(t_stack *stack) {
+    t_node *current;
     int max;
 
     current = stack->head;
@@ -148,8 +148,8 @@ int is_sorted(Stack *stack) {
     return (1);
 }
 
-int get_size(Stack *stack) {
-    Node *current;
+int get_size(t_stack *stack) {
+    t_node *current;
     int size;
     
     size = 0;
@@ -161,7 +161,7 @@ int get_size(Stack *stack) {
     return (size);
 }
 
-void sort_small_stack(Stack *stack_a, Stack *stack_b, int size) {
+void sort_small_stack(t_stack *stack_a, t_stack *stack_b, int size) {
     if (size == 2) {
         sa(stack_a);
     }
@@ -190,9 +190,9 @@ void sort_small_stack(Stack *stack_a, Stack *stack_b, int size) {
     // }
 }
 
-void free_stack(Stack *stack) {
-    Node *current;
-    Node *temp;
+void free_stack(t_stack *stack) {
+    t_node *current;
+    t_node *temp;
 
     current = stack->head;
     while (current) {
@@ -207,8 +207,8 @@ int main(int argc, char **argv)
 {
     int i;
     int size;
-    Stack stack_a;
-    Stack stack_b;
+    t_stack stack_a;
+    t_stack stack_b;
     
     if (argc < 2)
         return (0);
@@ -217,11 +217,11 @@ int main(int argc, char **argv)
     stack_b.head = NULL;
     if (validate_input(argv, &stack_a))
     {
-        // if (is_sorted(&stack_a))
-        //     return (0);
-        // size = get_size(&stack_a);
-        // if (size < 5)
-        //     sort_small_stack(&stack_a, &stack_b, size);
+        if (is_sorted(&stack_a))
+            return (0);
+        size = get_size(&stack_a);
+        if (size < 5)
+            sort_small_stack(&stack_a, &stack_b, size);
         
         // //sa(&stack_a);
         // // pb(&stack_a, &stack_b);

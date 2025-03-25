@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   pb.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 16:02:51 by macbook           #+#    #+#             */
-/*   Updated: 2025/01/29 15:29:50 by macbook          ###   ########.fr       */
+/*   Updated: 2025/03/25 13:40:52 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
 
-void pb(Stack *stack_a, Stack *stack_b) {
+void pb(t_stack *stack_a, t_stack *stack_b) {
   if (stack_a == NULL || stack_a->head == NULL)
     return;
   
