@@ -6,7 +6,7 @@
 /*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:30:21 by macbook           #+#    #+#             */
-/*   Updated: 2025/03/27 12:20:20 by hghoutan         ###   ########.fr       */
+/*   Updated: 2025/03/27 15:41:11 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,24 +161,6 @@ void sort_three(t_stack *stack) {
         rra(stack);
 }
 
-// void count_sort(t_stack *stack_a, t_stack *stack_b, int size) {
-    
-// }
-
-void sort_small_stack(t_stack *stack_a, t_stack *stack_b, int size) {
-    if (size == 1)
-        return;
-    else if (size == 2) {
-        sa(stack_a);
-    }
-    while (size > 3) {
-        pb(stack_a, stack_b);
-        size--;
-    }
-    sort_three(stack_a);
-    //else
-    //    count_sort(stack_a, stack_b, size);
-}
 
 void free_stack(t_stack *stack) {
     t_node *current;
@@ -266,24 +248,23 @@ void convert_to_indices(t_stack* stack) {
 }
 
 int get_max_bits(t_stack* stack) {
-  int max_num = 0;
-  t_node* current = stack->head;
+    int max_num;
+    int max_bits;
+    t_node  *current;
   
-  // Find max number
-  while (current) {
-      if (current->data > max_num) {
-          max_num = current->data;
-      }
-      current = current->next;
-  }
-  
-  // Calculate number of bits
-  int max_bits = 0;
-  while ((max_num >> max_bits) != 0) {
-      max_bits++;
-  }
-  
-  return max_bits;
+    max_num = 0;
+    current = stack->head;
+    while (current) {
+        if (current->data > max_num) {
+            max_num = current->data;
+        }
+        current = current->next;
+    }
+    max_bits = 0;
+    while ((max_num >> max_bits) != 0) {
+        max_bits++;
+    }
+    return max_bits;
 }
 
 int get_bit(int num, int pos) {
@@ -291,32 +272,107 @@ int get_bit(int num, int pos) {
 }
 
 void radix_sort(t_stack* stack_a, t_stack* stack_b, int size) {
-  convert_to_indices(stack_a);
-  
-  int max_bits = get_max_bits(stack_a);
-  
-  for (int bit = 0; bit < max_bits; bit++) {
-      int moves = 0;
-      
-      // Process all elements in stack_a for current bit
-      while (moves < size) {
-          int top_num = stack_a->head->data;
-          
-          // Check current bit using bitwise operations
-          if (((top_num >> bit) & 1) == 1) {
+    int bit;
+    int max_bits;
+    int moves;
+    int num;
+    
+    convert_to_indices(stack_a);
+    max_bits = get_max_bits(stack_a);
+    bit = 0;
+    while (bit < max_bits) {
+        moves = 0;
+        while (moves < size) {
+            num = stack_a->head->data;
+            if (((num >> bit) & 1) == 1) {
               ra(stack_a);
-          } else {
+            } else {
               pb(stack_a, stack_b);
-          }
-          
-          moves++;
-      }
-      
-      while (stack_b->head) {
-          pa(stack_b, stack_a);
-      }
-  }
+            }
+            moves++;
+        }
+        while (stack_b->head) {
+            pa(stack_b, stack_a);
+        }
+        bit++;
+    }
+    
 }
+
+int	find_index(int nb, t_stack *stack)
+{
+    t_node *current;
+	int	index;
+
+	index = 0;
+    current = stack->head;
+	while (current)
+	{
+		if (current->data == nb)
+			return (index);
+		current = current->next;
+		index++;
+	}
+	return (-1);
+}
+
+
+int	find_min(t_stack *stack)
+{
+    t_node *current;
+	int	min;
+
+    current = stack->head;
+	min = current->data;
+    
+	while (current)
+	{
+		if (current->data < min)
+			min = current->data;
+		current = current->next;
+	}
+	return (min);
+}
+
+void	move_to_top(t_stack *stack_a, int index, int arg_num)
+{
+	if (index <= arg_num / 2)
+	{
+		while (index-- > 0)
+			ra(stack_a);
+	}
+	else
+	{
+		index = arg_num - index;
+		while (index-- > 0)
+			rra(stack_a);
+	}
+}
+
+void	small_sort(t_stack *stack_a, t_stack *stack_b, int arg_num)
+{
+	int	index;
+
+	index = 0;
+	if (is_sorted(stack_a) || arg_num == 1)
+		return ;
+	if (arg_num == 2)
+		sa(stack_a);
+	else
+	{
+		while (arg_num > 3)
+		{
+			index = find_index(find_min(stack_a), stack_a);
+			move_to_top(stack_a, index, arg_num);
+			pb(stack_a, stack_b);
+			arg_num--;
+		}
+		sort_three(stack_a);
+		while (stack_a->head != NULL)
+            pa(stack_a, stack_b);            
+	}
+}
+
 
 int main(int argc, char **argv)
 {
@@ -334,7 +390,7 @@ int main(int argc, char **argv)
             return (0);
         size = get_size(&stack_a);
         if (size < 20)
-            sort_small_stack(&stack_a, &stack_b, size);
+            small_sort(&stack_a, &stack_b, size);
         else
             radix_sort(&stack_a, &stack_b, size);
         // //sa(&stack_a);
