@@ -6,7 +6,7 @@
 /*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:30:21 by macbook           #+#    #+#             */
-/*   Updated: 2025/03/27 11:44:20 by hghoutan         ###   ########.fr       */
+/*   Updated: 2025/03/27 12:20:20 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,56 +193,76 @@ void free_stack(t_stack *stack) {
     stack->head = NULL;
 }
 
+int *ft_copy(t_stack* stack, int size) {
+    t_node* current;
+    int* copied_values;
+    int i;
+    
+    i = 0;
+    current = stack->head;
+    copied_values = malloc(size * sizeof(int));
+    while (current) {
+        copied_values[i++] = current->data;
+        current = current->next;
+    }
+    return copied_values;
+}
+
+int *ft_copy_and_sort(t_stack* stack, int size) {
+    int* sorted_values;
+    int temp;
+    int i;
+    int j;
+        
+    sorted_values = ft_copy(stack, size);
+    i = 0;
+    while (i < size - 1) {
+        j = 0;
+        while (j < size - i - 1) {
+            if (sorted_values[j] > sorted_values[j + 1]) {
+                temp = sorted_values[j];
+                sorted_values[j] = sorted_values[j + 1];
+                sorted_values[j + 1] = temp;
+            }
+            j++;
+        }
+        i++;
+    }
+    return sorted_values;
+}
+
+void ft_convert(t_stack* stack, int *original_values, int *sorted_values, int size) {
+    t_node* current;
+    int i;
+    int j;
+    
+    current = stack->head;
+    i = 0;
+    while (current) {
+        j = 0;
+        while (j < size) {
+            if (original_values[i] == sorted_values[j]) {
+                current->data = j;
+                break;
+            }
+            j++;
+        }
+        current = current->next;
+        i++;
+    }
+}
+
 void convert_to_indices(t_stack* stack) {
-  // Create a copy of the original stack
-  t_node* current = stack->head;
-  
-  // Create an array to store original values
-  int size = 0;
-  t_node* count_node = current;
-  while (count_node) {
-      size++;
-      count_node = count_node->next;
-  }
-  
-  int* original_values = malloc(size * sizeof(int));
-  int* sorted_values = malloc(size * sizeof(int));
-  
-  // Copy original values
-  current = stack->head;
-  for (int i = 0; current; i++) {
-      original_values[i] = current->data;
-      sorted_values[i] = current->data;
-      current = current->next;
-  }
-  
-  // Sort the copied array
-  for (int i = 0; i < size - 1; i++) {
-      for (int j = 0; j < size - i - 1; j++) {
-          if (sorted_values[j] > sorted_values[j + 1]) {
-              int temp = sorted_values[j];
-              sorted_values[j] = sorted_values[j + 1];
-              sorted_values[j + 1] = temp;
-          }
-      }
-  }
-  
-  // Replace values with their indices
-  current = stack->head;
-  for (int i = 0; current; i++) {
-      // Find index of original value in sorted array
-      for (int j = 0; j < size; j++) {
-          if (original_values[i] == sorted_values[j]) {
-              current->data = j;
-              break;
-          }
-      }
-      current = current->next;
-  }
-  
-  // Free temporary arrays
-  free(original_values);
-  free(sorted_values);
+    int *sorted_values;
+    int *original_values;
+    int size;
+    
+    size = get_size(stack);
+    original_values = ft_copy(stack, size);
+    sorted_values = ft_copy_and_sort(stack, size);
+    ft_convert(stack, original_values, sorted_values, size);
+    free(original_values);
+    free(sorted_values);
 }
 
 int get_max_bits(t_stack* stack) {
