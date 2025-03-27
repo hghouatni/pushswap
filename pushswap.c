@@ -6,12 +6,14 @@
 /*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:30:21 by macbook           #+#    #+#             */
-/*   Updated: 2025/03/25 15:44:08 by hghoutan         ###   ########.fr       */
+/*   Updated: 2025/03/27 11:44:20 by hghoutan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
+#include <limits.h>
+
 
 
 int ft_exist(t_stack *stack, int num) {
@@ -33,34 +35,6 @@ void free_all(char **split_args) {
         i++;
     }
     free(split_args);
-}
-
-long	ft_atoi2(const char *str)
-{
-	int	ng;
-	long	num;
-
-	ng = 1;
-	num = 0;
-
-	while (*str == ' ' || (*str >= 9 && *str <= 13))
-		str++;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			ng = -1;
-		str++;
-	}
-	while (*str >= '0' && *str <= '9')
-	{
-		num = (num * 10) + (*str - '0');
-        if (num > 2147483647 && ng == 1)
-            return (2147483648);
-        if (num > 2147483648 && ng == -1)
-            return (-2147483649);
-		str++;
-	}
-	return (num * ng);
 }
 
 int validate_input(char **argv, t_stack *stack) {
@@ -85,7 +59,7 @@ int validate_input(char **argv, t_stack *stack) {
                     return (free_all(split_args), 0);
                 j++;
             }
-            num = ft_atoi2(split_args[k]);
+            num = ft_atoi(split_args[k]);
             if (num > 2147483647 || num < -2147483648)
                 return (free_all(split_args), 0);
             if (ft_exist(stack, num))
@@ -137,8 +111,9 @@ void print_stack(t_node *head) {
 
 int is_sorted(t_stack *stack) {
     t_node *current;
-    int max;
 
+    if (stack->head == NULL)
+        return (1);
     current = stack->head;
     while (current->next) {
         if (current->data > (current->next->data))
@@ -186,9 +161,9 @@ void sort_three(t_stack *stack) {
         rra(stack);
 }
 
-void count_sort(t_stack *stack_a, t_stack *stack_b, int size) {
+// void count_sort(t_stack *stack_a, t_stack *stack_b, int size) {
     
-}
+// }
 
 void sort_small_stack(t_stack *stack_a, t_stack *stack_b, int size) {
     if (size == 1)
@@ -201,8 +176,8 @@ void sort_small_stack(t_stack *stack_a, t_stack *stack_b, int size) {
         size--;
     }
     sort_three(stack_a);
-    else
-        count_sort(stack_a, stack_b, size);
+    //else
+    //    count_sort(stack_a, stack_b, size);
 }
 
 void free_stack(t_stack *stack) {
@@ -218,71 +193,119 @@ void free_stack(t_stack *stack) {
     stack->head = NULL;
 }
 
-int getMax(t_stack *stack_a, int n)
-{
-    t_node *current;
-    int max;
-    
-    max = 0;
-    current = stack_a->head;
-    while (current) {
-        if (current->data > max)
-            max = current->data;
-        current = current->next;
-    }
-    return max;
+void convert_to_indices(t_stack* stack) {
+  // Create a copy of the original stack
+  t_node* current = stack->head;
+  
+  // Create an array to store original values
+  int size = 0;
+  t_node* count_node = current;
+  while (count_node) {
+      size++;
+      count_node = count_node->next;
+  }
+  
+  int* original_values = malloc(size * sizeof(int));
+  int* sorted_values = malloc(size * sizeof(int));
+  
+  // Copy original values
+  current = stack->head;
+  for (int i = 0; current; i++) {
+      original_values[i] = current->data;
+      sorted_values[i] = current->data;
+      current = current->next;
+  }
+  
+  // Sort the copied array
+  for (int i = 0; i < size - 1; i++) {
+      for (int j = 0; j < size - i - 1; j++) {
+          if (sorted_values[j] > sorted_values[j + 1]) {
+              int temp = sorted_values[j];
+              sorted_values[j] = sorted_values[j + 1];
+              sorted_values[j + 1] = temp;
+          }
+      }
+  }
+  
+  // Replace values with their indices
+  current = stack->head;
+  for (int i = 0; current; i++) {
+      // Find index of original value in sorted array
+      for (int j = 0; j < size; j++) {
+          if (original_values[i] == sorted_values[j]) {
+              current->data = j;
+              break;
+          }
+      }
+      current = current->next;
+  }
+  
+  // Free temporary arrays
+  free(original_values);
+  free(sorted_values);
 }
 
-// A function to do counting sort of arr[]
-// according to the digit
-// represented by exp.
-void countSort(int arr[], int n, int exp)
-{
-
-    // Output array
-    int output[n];
-    int i, count[10] = { 0 };
-
-    // Store count of occurrences
-    // in count[]
-    for (i = 0; i < n; i++)
-        count[(arr[i] / exp) % 10]++;
-
-    // Change count[i] so that count[i]
-    // now contains actual position
-    // of this digit in output[]
-    for (i = 1; i < 10; i++)
-        count[i] += count[i - 1];
-
-    // Build the output array
-    for (i = n - 1; i >= 0; i--) {
-        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-        count[(arr[i] / exp) % 10]--;
-    }
-
-    // Copy the output array to arr[],
-    // so that arr[] now contains sorted
-    // numbers according to current digit
-    for (i = 0; i < n; i++)
-        arr[i] = output[i];
+int get_max_bits(t_stack* stack) {
+  int max_num = 0;
+  t_node* current = stack->head;
+  
+  // Find max number
+  while (current) {
+      if (current->data > max_num) {
+          max_num = current->data;
+      }
+      current = current->next;
+  }
+  
+  // Calculate number of bits
+  int max_bits = 0;
+  while ((max_num >> max_bits) != 0) {
+      max_bits++;
+  }
+  
+  return max_bits;
 }
 
+int get_bit(int num, int pos) {
+  return (num >> pos) & 1;
+}
 
-void radixsort(t_stack stack_a, t_stack stack_b, int n)
-{
-    int m = getMax(stack_a, n);
+void radix_sort(t_stack* stack_a, t_stack* stack_b, int size) {
+  convert_to_indices(stack_a);
+  
+  int max_bits = get_max_bits(stack_a);
+  
+  for (int bit = 0; bit < max_bits; bit++) {
+      int moves = 0;
+      
+      // Process all elements in stack_a for current bit
+      while (moves < size) {
+          int top_num = stack_a->head->data;
+          
+          // Check current bit using bitwise operations
+          if (((top_num >> bit) & 1) == 1) {
+              ra(stack_a);
+          } else {
+              pb(stack_a, stack_b);
+          }
+          
+          moves++;
+      }
+      
+      while (stack_b->head) {
+          pa(stack_b, stack_a);
+      }
+  }
 }
 
 int main(int argc, char **argv)
 {
-    int i;
     int size;
     t_stack stack_a;
     t_stack stack_b;
     
     if (argc < 2)
         return (0);
-    i = 1;
     stack_a.head = NULL;
     stack_b.head = NULL;
     if (validate_input(argv, &stack_a))

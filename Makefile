@@ -1,7 +1,7 @@
 NAME = push_swap
-CC = gcc
-CFLAGS = 
-LIBFT_DIR = ../libft
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 SRC = $(wildcard *.c)
 OBJ = $(SRC:.c=.o)
