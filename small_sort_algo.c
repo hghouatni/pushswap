@@ -3,40 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   small_sort_algo.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 15:49:42 by hghoutan          #+#    #+#             */
-/*   Updated: 2025/03/27 16:09:15 by hghoutan         ###   ########.fr       */
+/*   Updated: 2025/03/28 13:57:47 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	sort_three(t_stack *stack)
+void	ft_sort_three(t_stack *stack)
 {
 	int	a;
 	int	b;
 	int	c;
 
-	a = (long)stack->head->data;
-	b = (int)stack->head->next->data;
-	c = (int)stack->head->next->next->data;
+	a = stack->head->data;
+	b = stack->head->next->data;
+	c = stack->head->next->next->data;
 	if (a > b && b < c && a < c)
 		sa(stack);
-	else if (a > b && b > c && a > c)
+	else if (a > b && b > c)
 	{
 		sa(stack);
 		rra(stack);
 	}
-	else if (a > b && b > c && a < c)
+	else if (a > b && b < c && a > c)
 		ra(stack);
+	else if (a < b && a > c)
+		rra(stack);
 	else if (a < b && b > c && a < c)
 	{
 		sa(stack);
 		ra(stack);
 	}
-	else if (a < b && b > c && a > c)
-		rra(stack);
 }
 
 int	find_index(int nb, t_stack *stack)
@@ -105,8 +105,8 @@ void	small_sort(t_stack *stack_a, t_stack *stack_b, int arg_num)
 			pb(stack_a, stack_b);
 			arg_num--;
 		}
-		sort_three(stack_a);
-		while (stack_a->head != NULL)
-			pa(stack_a, stack_b);
+		ft_sort_three(stack_a);
+		while (stack_b->head != NULL)
+			pa(stack_b, stack_a);
 	}
 }
