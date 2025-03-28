@@ -6,22 +6,12 @@
 /*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:30:21 by macbook           #+#    #+#             */
-/*   Updated: 2025/03/28 00:00:52 by macbook          ###   ########.fr       */
+/*   Updated: 2025/03/28 16:48:46 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <limits.h>
-
-// void print_stack(t_node *head) {
-//   t_node* current;
-
-//   current = head;
-//   while (current) {
-//     printf("%ld\n", (long)current->data);
-//     current = current->next;
-//   }
-// }
 
 void	free_stack(t_stack *stack)
 {
@@ -38,6 +28,16 @@ void	free_stack(t_stack *stack)
 	stack->head = NULL;
 }
 
+void exit_error() {
+  write(1, "Error\n", 6);
+  exit(1);
+}
+
+void init_stack(t_stack *stack)
+{
+  stack->head = NULL;
+}
+
 int	main(int argc, char **argv)
 {
 	int		size;
@@ -46,8 +46,8 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 		return (0);
-	stack_a.head = NULL;
-	stack_b.head = NULL;
+	init_stack(&stack_a);
+  init_stack(&stack_b);
 	if (validate_input(argv, &stack_a))
 	{  
 		if (is_sorted(&stack_a))
@@ -58,8 +58,8 @@ int	main(int argc, char **argv)
 		else
 			radix_sort(&stack_a, &stack_b, size);
 	}
-	else
-		write(1, "Error\n", 6);
+	else 
+    exit_error();
 	free_stack(&stack_a);
 	free_stack(&stack_b);
 	return (0);
