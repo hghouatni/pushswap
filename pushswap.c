@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswap.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:30:21 by macbook           #+#    #+#             */
-/*   Updated: 2025/03/27 16:02:08 by hghoutan         ###   ########.fr       */
+/*   Updated: 2025/03/28 00:00:52 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ int	main(int argc, char **argv)
 	stack_a.head = NULL;
 	stack_b.head = NULL;
 	if (validate_input(argv, &stack_a))
-	{
+	{  
 		if (is_sorted(&stack_a))
-			return (0);
-		size = get_size(&stack_a);
+      return (0);
+    size = get_size(&stack_a);
 		if (size < 20)
 			small_sort(&stack_a, &stack_b, size);
 		else

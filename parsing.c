@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hghoutan <hghoutan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 16:00:26 by hghoutan          #+#    #+#             */
-/*   Updated: 2025/03/27 16:26:14 by hghoutan         ###   ########.fr       */
+/*   Updated: 2025/03/27 23:44:04 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	validate_and_parse_args(char *arg, t_stack *stack)
 			free_all(split_args);
 			return (0);
 		}
+    push_stack(stack, num);
 		k++;
 	}
 	free_all(split_args);
